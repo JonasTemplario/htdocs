@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bem-vindo ao PHP</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body class="home-page">
+  <main class="home-shell">
+    <header class="topbar">
+      <a class="brand brand-link" href="#home" aria-label="Ir para a página inicial">
+        <span class="brand-mark">PHP</span>
+        <span>Turma C</span>
+      </a>
+
+      <nav class="menu" aria-label="Menu principal">
+        <a href="index.php" class="menu-item active">Home</a>
+        <a href="src/login.php" class="menu-item">Produtos</a>
+        <a href="src/login.php" class="menu-item menu-item-accent">Login</a>
+      </nav>
+    </header>
+
+    <section class="home-hero" id="home">
+      <div class="hero-copy">
+        <span class="eyebrow">Primeiros passos com PHP</span>
+        <h1>Bem-vindo à nossa página de estudos.</h1>
+        <p class="hero-text">
+          PHP é uma linguagem de programação muito usada no desenvolvimento web. Ela roda no servidor,
+          processa regras, conversa com banco de dados e devolve páginas dinâmicas para o navegador.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-soft" href="src/login.php">Ver produtos</a>
+          <a class="btn" href="src/login.php">Abrir login</a>
+        </div>
+      </div>
+
+      <aside class="hero-aside" aria-label="Resumo rápido">
+        <div class="info-chip">
+          <strong>Servidor</strong>
+          <span>Executa a lógica antes da página chegar ao navegador.</span>
+        </div>
+        <div class="info-chip">
+          <strong>Dinâmico</strong>
+          <span>Permite montar conteúdo com regras, dados e formulários.</span>
+        </div>
+        <div class="info-chip">
+          <strong>Base do projeto</strong>
+          <span>Este material vai servir de ponto de partida para a continuação dos alunos.</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="content-grid" id="produtos" aria-label="Conteúdos de estudo">
+      <article class="content-card">
+        <span class="card-tag">Conceito</span>
+        <h2>O que é PHP?</h2>
+        <p>
+          É uma linguagem voltada para desenvolvimento web. Com ela, é possível receber dados de formulários,
+          criar páginas personalizadas e integrar sistemas com facilidade.
+        </p>
+      </article>
+
+      <article class="content-card">
+        <span class="card-tag">Uso prático</span>
+        <h2>Onde ele aparece?</h2>
+        <p>
+          PHP é comum em páginas institucionais, sistemas acadêmicos, portais administrativos, blogs e
+          aplicações que precisam de conteúdo dinâmico.
+        </p>
+      </article>
+
+      <article class="content-card">
+        <span class="card-tag">Na aula</span>
+        <h2>O que os alunos vão continuar</h2>
+        <p>
+          A próxima etapa pode incluir formulários, condicionais, variáveis, conexão com banco de dados e
+          páginas mais interativas dentro deste mesmo projeto.
+        </p>
+      </article>
+    </section>
+
+    <section class="support-panel" aria-label="Roteiro rápido">
+      <div>
+        <span class="section-label">Roteiro</span>
+        <h2>O que vale guardar desta abertura</h2>
+      </div>
+
+      <ul class="step-list">
+        <li>PHP roda no servidor, não no navegador.</li>
+        <li>Ele combina bem com HTML para gerar páginas dinâmicas.</li>
+        <li>Este layout já fica pronto para a turma ampliar depois.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

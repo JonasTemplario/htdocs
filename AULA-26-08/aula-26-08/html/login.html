@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tela de Login</title>
+   <link rel="stylesheet" href="../css/estilo.css">
+</head>
+<body>
+  <main class="page">
+    <section class="hero" aria-label="Apresentação">
+      <div>
+        <div class="brand">
+          <span class="brand-mark">M</span>
+          <span>Portal Acadêmico</span>
+        </div>
+
+        <h1>Bem-vindo de volta.</h1>
+        <p>
+          Uma tela de login elegante, responsiva e sem JavaScript, pronta para ser usada como exemplo
+          em aula de HTML e CSS.
+        </p>
+
+        <div class="feature-list">
+          <div class="feature">
+            <span class="dot"></span>
+            <div>
+              <strong>Layout moderno</strong>
+              <span>Cards com vidro fosco, gradientes e bom contraste.</span>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot"></span>
+            <div>
+              <strong>Acessível</strong>
+              <span>Labels reais, foco visível e estrutura simples.</span>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot"></span>
+            <div>
+              <strong>Sem JavaScript</strong>
+              <span>Ótimo para explicar apenas HTML e CSS na prática.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats" aria-label="Indicadores">
+        <div class="stat">
+          <strong>100%</strong>
+          <span>HTML + CSS</span>
+        </div>
+        <div class="stat">
+          <strong>0</strong>
+          <span>JavaScript</span>
+        </div>
+        <div class="stat">
+          <strong>1</strong>
+          <span>Exemplo pronto</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="login-card" aria-label="Formulário de login">
+      <h2>Entrar na conta</h2>
+      <p class="subtitle">
+        Use este bloco como base para demonstrar formulários, alinhamento, estados de foco e responsividade.
+      </p>
+
+      <form action="validacao.php" method="post">
+        <label for="email">
+          E-mail
+          <span class="field">
+            <span class="icon">✉</span>
+            <input id="email" name="email" type="email" placeholder="voce@exemplo.com" autocomplete="email" required>
+          </span>
+        </label>
+
+        <label for="senha">
+          Senha
+          <span class="field">
+            <span class="icon">⟡</span>
+            <input id="senha" name="senha" type="password" placeholder="Digite sua senha" autocomplete="current-password" required>
+          </span>
+        </label>
+
+        <div class="row">
+          <label class="remember">
+            <input type="checkbox" name="lembrar">
+            Lembrar de mim
+          </label>
+          <a href="#">Esqueceu a senha?</a>
+        </div>
+
+        <button class="btn" type="submit">Acessar</button>
+
+        <div class="helper">
+          Exemplo pensado para aula: sem script, sem dependências externas e fácil de adaptar para
+          qualquer projeto.
+        </div>
+      </form>
+
+      <div class="footer-note">
+        HTML semântico, CSS puro e acentuação correta em pt-BR.
+      </div>
+    </section>
+  </main>
+</body>
+</html>

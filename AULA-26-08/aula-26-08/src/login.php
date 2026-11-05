@@ -1,0 +1,4 @@
+<?php
+$login = file_get_contents('../html/login.html');
+echo $login;
+

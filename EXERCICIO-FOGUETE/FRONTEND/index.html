@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISSION: LUNA — Centro de Controle</title>
+
+<!-- Fontes: Space Grotesk para títulos, IBM Plex Mono para dados de telemetria, Inter para texto corrido -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Chart.js via CDN, usado apenas para o gráfico de combustível por trecho -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Campo de estrelas gerado via JS, fica atrás de tudo -->
+  <div class="starfield" id="starfield"></div>
+
+  <!-- ===================== CABEÇALHO ===================== -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <span class="brand-mark">☾</span>
+      <div>
+        <h1>MISSION: LUNA</h1>
+        <p class="brand-sub">Centro de controle da missão lunar</p>
+      </div>
+    </div>
+
+    <div class="topbar-status">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span id="systemStatusText">SYSTEM ONLINE</span>
+      </div>
+      <div class="clock" id="clock">00:00:00</div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== TRAJETO TERRA -> LUA ===================== -->
+    <section class="panel track-panel">
+      <div class="panel-heading">
+        <h2>Trajeto da missão</h2>
+        <span class="panel-tag" id="phaseTag">Aguardando lançamento</span>
+      </div>
+
+      <div class="track">
+        <div class="track-body">Terra</div>
+        <div class="track-line">
+          <div class="track-progress" id="trackProgress"></div>
+          <div class="rocket" id="rocket">
+            <span class="rocket-icon">🚀</span>
+            <span class="rocket-flame" id="rocketFlame"></span>
+          </div>
+        </div>
+        <div class="track-body">Lua</div>
+      </div>
+
+      <div class="track-earth-icon">🌎</div>
+      <div class="track-moon-icon">🌕</div>
+
+      <div class="progress-readout">
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progressBar"></div>
+        </div>
+        <span class="progress-value" id="progressValue">0%</span>
+      </div>
+
+      <!-- Overlay de contagem regressiva -->
+      <div class="countdown-overlay" id="countdownOverlay">
+        <span class="countdown-number" id="countdownNumber">3</span>
+      </div>
+
+      <!-- Overlay de resultado final da missão -->
+      <div class="result-overlay" id="resultOverlay">
+        <span class="result-icon" id="resultIcon">🌕</span>
+        <h2 class="result-title" id="resultTitle">MISSION COMPLETE</h2>
+        <p class="result-sub" id="resultSub">Foguete chegou à Lua</p>
+      </div>
+    </section>
+
+    <!-- ===================== PAINEL DE COMANDO ===================== -->
+    <section class="panel control-panel">
+      <div class="panel-heading">
+        <h2>Painel de comando</h2>
+      </div>
+
+      <form id="missionForm" class="mission-form" novalidate>
+        <div class="field">
+          <label for="combustivel">Combustível disponível no tanque</label>
+          <div class="field-input">
+            <input type="number" id="combustivel" name="combustivel" step="any" placeholder="ex: 700" autocomplete="off">
+            <span class="field-unit">un.</span>
+          </div>
+          <span class="field-error" id="errCombustivel"></span>
+        </div>
+
+        <div class="field">
+          <label for="consumo">Consumo por trecho (15.376 km)</label>
+          <div class="field-input">
+            <input type="number" id="consumo" name="consumo" step="any" placeholder="ex: 25" autocomplete="off">
+            <span class="field-unit">un.</span>
+          </div>
+          <span class="field-error" id="errConsumo"></span>
+        </div>
+
+        <button type="submit" class="launch-btn" id="launchBtn">
+          🚀 ACIONAR FOGUETE
+        </button>
+
+        <p class="form-note">A missão percorre 384.400 km em trechos fixos de 15.376 km (25 trechos).</p>
+      </form>
+    </section>
+
+    <!-- ===================== TELEMETRIA ===================== -->
+    <section class="panel telemetry-panel">
+      <div class="panel-heading">
+        <h2>Telemetria</h2>
+        <span class="panel-tag" id="telemetryTag">Sem dados</span>
+      </div>
+
+      <div class="telemetry-grid">
+        <div class="tele-card">
+          <span class="tele-label">Combustível inicial</span>
+          <span class="tele-value" id="teleInicial">—</span>
+        </div>
+        <div class="tele-card">
+          <span class="tele-label">Combustível atual</span>
+          <span class="tele-value" id="teleAtual">—</span>
+        </div>
+        <div class="tele-card">
+          <span class="tele-label">Combustível consumido</span>
+          <span class="tele-value" id="teleConsumido">—</span>
+        </div>
+        <div class="tele-card">
+          <span class="tele-label">Distância percorrida</span>
+          <span class="tele-value" id="teleDistPercorrida">—</span>
+        </div>
+        <div class="tele-card">
+          <span class="tele-label">Distância restante</span>
+          <span class="tele-value" id="teleDistRestante">—</span>
+        </div>
+        <div class="tele-card">
+          <span class="tele-label">Progresso</span>
+          <span class="tele-value" id="teleProgresso">—</span>
+        </div>
+        <div class="tele-card">
+          <span class="tele-label">Trecho atual</span>
+          <span class="tele-value" id="teleTrecho">—</span>
+        </div>
+        <div class="tele-card">
+          <span class="tele-label">Status</span>
+          <span class="tele-value" id="teleStatus">Aguardando</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== GRÁFICO ===================== -->
+    <section class="panel chart-panel">
+      <div class="panel-heading">
+        <h2>Combustível restante por trecho</h2>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="fuelChart" height="110"></canvas>
+      </div>
+    </section>
+
+    <!-- ===================== HISTÓRICO ===================== -->
+    <section class="panel history-panel">
+      <div class="panel-heading">
+        <h2>Registro de telemetria</h2>
+      </div>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Trecho</th>
+              <th>Distância</th>
+              <th>Combustível restante</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+            <tr class="history-empty-row">
+              <td colspan="3">Nenhum dado ainda. Acione o foguete para iniciar a missão.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer-note">
+    MISSION: LUNA — projeto acadêmico · frontend independente conectado ao backend PHP existente
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

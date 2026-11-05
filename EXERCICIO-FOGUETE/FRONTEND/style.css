@@ -1,0 +1,577 @@
+/* =========================================================
+   MISSION: LUNA — estilos
+   Tema: centro de controle de missão espacial (HUD)
+   ========================================================= */
+
+:root{
+  /* --- cores base --- */
+  --bg-deep:      #060a13;
+  --bg-panel:     #0d1420;
+  --bg-panel-2:   #101a2b;
+  --border-soft:  rgba(107, 197, 224, 0.16);
+  --border-strong:rgba(107, 197, 224, 0.35);
+
+  --accent-cyan:  #4fd8eb;
+  --accent-amber: #f5a623;
+  --accent-green: #4ade80;
+  --accent-red:   #ff5470;
+
+  --text-main:    #e8eef5;
+  --text-muted:   #7c8aa0;
+
+  --font-head: 'Space Grotesk', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-body: 'Inter', sans-serif;
+
+  --radius: 10px;
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  margin: 0;
+  padding: 0;
+  background: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Fundo com leve gradiente de nebulosa + campo de estrelas por cima */
+body{
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(79,216,235,0.08), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 20%, rgba(245,166,35,0.05), transparent 60%),
+    var(--bg-deep);
+}
+
+.starfield{
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.star{
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: drift linear infinite;
+}
+@keyframes drift{
+  from{ transform: translateY(0); }
+  to{ transform: translateY(40px); }
+}
+@keyframes twinkle{
+  0%, 100%{ opacity: 0.15; }
+  50%{ opacity: 0.9; }
+}
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+.topbar{
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 36px;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgba(6, 10, 19, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+.topbar-brand{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark{
+  font-size: 28px;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 14px rgba(79,216,235,0.6);
+}
+
+.topbar-brand h1{
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.06em;
+}
+
+.brand-sub{
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.topbar-status{
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.status-pill{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--accent-green);
+}
+
+.status-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%, 100%{ opacity: 1; transform: scale(1); }
+  50%{ opacity: 0.4; transform: scale(0.8); }
+}
+
+.clock{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* =========================================================
+   LAYOUT GERAL
+   ========================================================= */
+main{
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 22px;
+}
+
+.panel{
+  background: linear-gradient(180deg, var(--bg-panel), var(--bg-panel-2));
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+}
+
+.panel-heading{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.panel-heading h2{
+  font-family: var(--font-head);
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.panel-tag{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-cyan);
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border-soft);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.track-panel{ grid-column: 1 / -1; position: relative; overflow: hidden; }
+.control-panel{ grid-column: 1 / 2; }
+.telemetry-panel{ grid-column: 2 / 3; grid-row: span 2; }
+.chart-panel{ grid-column: 1 / 2; }
+.history-panel{ grid-column: 1 / -1; }
+
+@media (max-width: 860px){
+  main{ grid-template-columns: 1fr; }
+  .control-panel, .telemetry-panel, .chart-panel, .history-panel{ grid-column: 1 / -1; }
+}
+
+/* =========================================================
+   TRAJETO TERRA -> LUA
+   ========================================================= */
+.track{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.track-body{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  width: 42px;
+}
+.track-body:last-child{ text-align: right; }
+
+.track-line{
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+}
+
+.track-progress{
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-amber));
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.rocket{
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(-50%, -50%);
+  transition: left 0.5s ease;
+  font-size: 22px;
+  filter: drop-shadow(0 0 6px rgba(79,216,235,0.6));
+}
+.rocket-icon{ display: inline-block; }
+.rocket-flame{
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, var(--accent-amber));
+  border-radius: 4px;
+  opacity: 0;
+}
+.rocket-flame.active{
+  width: 20px;
+  opacity: 1;
+  animation: flicker 0.15s linear infinite;
+}
+@keyframes flicker{
+  0%, 100%{ opacity: 0.8; width: 20px; }
+  50%{ opacity: 1; width: 26px; }
+}
+
+.track-earth-icon, .track-moon-icon{
+  position: absolute;
+  top: 58px;
+  font-size: 26px;
+}
+.track-earth-icon{ left: 24px; }
+.track-moon-icon{ right: 24px; }
+
+.progress-readout{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.progress-bar-outer{
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.progress-bar-inner{
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-amber));
+  transition: width 0.5s ease;
+}
+.progress-value{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-cyan);
+  width: 48px;
+  text-align: right;
+}
+
+/* Contagem regressiva */
+.countdown-overlay{
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6,10,19,0.88);
+  z-index: 5;
+}
+.countdown-overlay.visible{ display: flex; }
+.countdown-number{
+  font-family: var(--font-head);
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--accent-amber);
+  text-shadow: 0 0 30px rgba(245,166,35,0.6);
+  animation: countPop 0.9s ease;
+}
+@keyframes countPop{
+  0%{ transform: scale(0.4); opacity: 0; }
+  30%{ transform: scale(1.1); opacity: 1; }
+  100%{ transform: scale(1); opacity: 1; }
+}
+
+/* Resultado final */
+.result-overlay{
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(6,10,19,0.94);
+  z-index: 6;
+  text-align: center;
+}
+.result-overlay.visible{
+  display: flex;
+  animation: fadeIn 0.4s ease;
+}
+.result-overlay.success .result-title{ color: var(--accent-green); }
+.result-overlay.fail .result-title{ color: var(--accent-red); }
+@keyframes fadeIn{
+  from{ opacity: 0; } to{ opacity: 1; }
+}
+.result-icon{ font-size: 54px; margin-bottom: 4px; }
+.result-title{
+  font-family: var(--font-head);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+.result-sub{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* =========================================================
+   FORMULÁRIO / PAINEL DE COMANDO
+   ========================================================= */
+.mission-form{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field label{
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.field-input{
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+.field-input:focus-within{
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(79,216,235,0.12);
+}
+
+.field-input input{
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-main);
+}
+.field-input input::-webkit-outer-spin-button,
+.field-input input::-webkit-inner-spin-button{
+  opacity: 1;
+}
+
+.field-unit{
+  padding: 0 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.field.has-error .field-input{
+  border-color: var(--accent-red);
+}
+
+.field-error{
+  display: block;
+  min-height: 16px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--accent-red);
+}
+
+.launch-btn{
+  margin-top: 4px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--accent-amber), #ff8a3d);
+  color: #14100a;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.launch-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(245,166,35,0.28);
+}
+.launch-btn:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.form-note{
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* =========================================================
+   TELEMETRIA
+   ========================================================= */
+.telemetry-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.tele-card{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+}
+
+.tele-label{
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+.tele-value{
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--accent-cyan);
+}
+
+.tele-value.warn{ color: var(--accent-amber); }
+.tele-value.danger{ color: var(--accent-red); }
+.tele-value.ok{ color: var(--accent-green); }
+
+/* =========================================================
+   GRÁFICO
+   ========================================================= */
+.chart-wrap{
+  position: relative;
+  height: 220px;
+}
+
+/* =========================================================
+   HISTÓRICO
+   ========================================================= */
+.history-table-wrap{
+  max-height: 280px;
+  overflow-y: auto;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+}
+
+.history-table{
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.history-table thead th{
+  position: sticky;
+  top: 0;
+  background: var(--bg-panel-2);
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.history-table tbody td{
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--text-main);
+}
+
+.history-table tbody tr:last-child td{ border-bottom: none; }
+
+.history-table tbody tr.new-row{
+  animation: rowIn 0.3s ease;
+}
+@keyframes rowIn{
+  from{ opacity: 0; transform: translateX(-6px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
+
+.history-empty-row td{
+  text-align: center;
+  color: var(--text-muted);
+  padding: 22px 14px;
+}
+
+/* =========================================================
+   RODAPÉ
+   ========================================================= */
+.footer-note{
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 18px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+}

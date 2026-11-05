@@ -1,0 +1,2 @@
+1 comando - xhost +si:localuser:root
+2 comando - sudo GDK_BACKEND=x11 /opt/lampp/manager-linux-x64.run

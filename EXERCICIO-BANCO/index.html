@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banco Digital</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">Banco Digital</div>
+    <nav>
+        <a href="#usuario">Cadastro</a>
+        <a href="#conta">Conta</a>
+        <a href="#operacoes">Operações</a>
+        <a href="#consultas">Consultas</a>
+    </nav>
+</header>
+
+<main>
+
+    <section class="boas-vindas">
+        <h1>Seu banco, simples e seguro</h1>
+        <p>Cadastre-se, abra uma conta e faça depósitos e saques em poucos cliques.</p>
+    </section>
+
+    <div class="grade">
+
+        <div class="cartao" id="usuario">
+            <h2>Cadastrar usuário</h2>
+            <p class="sub">Informe seus dados para começar.</p>
+            <form action="processar.php" method="post">
+                <input type="hidden" name="acao" value="cadastrar_usuario">
+                <label>Nome completo</label>
+                <input type="text" name="nome" required>
+                <label>CPF</label>
+                <input type="text" name="cpf" placeholder="000.000.000-00" required>
+                <label>Login</label>
+                <input type="text" name="login" required>
+                <label>Senha</label>
+                <input type="password" name="senha" required>
+                <button class="cheio azul" type="submit">Cadastrar</button>
+            </form>
+        </div>
+
+        <div class="cartao" id="conta">
+            <h2>Abrir conta</h2>
+            <p class="sub">A conta fica vinculada ao seu login.</p>
+            <form action="processar.php" method="post">
+                <input type="hidden" name="acao" value="cadastrar_conta">
+                <label>Login do usuário</label>
+                <input type="text" name="login" required>
+                <button class="cheio azul" type="submit">Abrir conta</button>
+            </form>
+        </div>
+
+        <div class="cartao" id="operacoes">
+            <h2>Depositar</h2>
+            <p class="sub">Adicione dinheiro à sua conta.</p>
+            <form action="processar.php" method="post">
+                <input type="hidden" name="acao" value="depositar">
+                <label>Número da conta</label>
+                <input type="number" name="conta" min="1" required>
+                <label>Valor (R$)</label>
+                <input type="text" name="valor" placeholder="0,00" required>
+                <button class="cheio" type="submit">Depositar</button>
+            </form>
+        </div>
+
+        <div class="cartao">
+            <h2>Sacar</h2>
+            <p class="sub">Retire dinheiro, se houver saldo.</p>
+            <form action="processar.php" method="post">
+                <input type="hidden" name="acao" value="sacar">
+                <label>Número da conta</label>
+                <input type="number" name="conta" min="1" required>
+                <label>Valor (R$)</label>
+                <input type="text" name="valor" placeholder="0,00" required>
+                <button class="cheio vermelho" type="submit">Sacar</button>
+            </form>
+        </div>
+
+        <div class="cartao" id="consultas">
+            <h2>Consultar saldo</h2>
+            <p class="sub">Veja quanto você tem na conta.</p>
+            <form action="processar.php" method="post">
+                <input type="hidden" name="acao" value="saldo">
+                <label>Número da conta</label>
+                <input type="number" name="conta" min="1" required>
+                <button class="cheio azul" type="submit">Ver saldo</button>
+            </form>
+        </div>
+
+        <div class="cartao">
+            <h2>Movimentações</h2>
+            <p class="sub">Todos os depósitos e saques da conta.</p>
+            <form action="processar.php" method="post">
+                <input type="hidden" name="acao" value="movimentacoes">
+                <label>Número da conta</label>
+                <input type="number" name="conta" min="1" required>
+                <button class="cheio azul" type="submit">Ver extrato</button>
+            </form>
+        </div>
+
+    </div>
+</main>
+
+<footer>Projeto Bancário - TDS</footer>
+
+</body>
+</html>
